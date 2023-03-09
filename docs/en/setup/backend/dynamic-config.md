@@ -21,7 +21,7 @@ configuration:
 ## Single Configuration
 Single Configuration is a config key that corresponds to a specific config value. The logic structure is:
 ```
-{configKey}:{configVaule}
+{configKey}:{configValue}
 ```
 For example:
 ```
@@ -38,7 +38,7 @@ Supported configurations are as follows:
 |core.default.endpoint-name-grouping| The endpoint name grouping setting. Overrides `endpoint-name-grouping.yml`. | Same as [`endpoint-name-grouping.yml`](endpoint-grouping-rules.md). |
 |core.default.log4j-xml| The log4j xml configuration. Overrides `log4j2.xml`. | Same as [`log4j2.xml`](dynamical-logging.md). |
 |agent-analyzer.default.traceSamplingPolicy| The sampling policy for default and service dimension, override `trace-sampling-policy-settings.yml`. | same as [`trace-sampling-policy-settings.yml`](trace-sampling.md) | 
-|configuration-discovery.default.agentConfigurations| The ConfigurationDiscovery settings. | See [`configuration-discovery.md`](https://github.com/apache/skywalking-java/blob/20fb8c81b3da76ba6628d34c12d23d3d45c973ef/docs/en/setup/service-agent/java-agent/configuration-discovery.md). |
+|configuration-discovery.default.agentConfigurations| The ConfigurationDiscovery settings. | See [`configuration-discovery.md`](https://skywalking.apache.org/docs/skywalking-java/next/en/setup/service-agent/java-agent/configuration-discovery/). |
 
 ## Group Configuration
 Group Configuration is a config key corresponding to a group sub config item. A sub config item is a key-value pair. The logic structure is:
@@ -67,5 +67,5 @@ Supported configurations are as follows:
 - [Etcd Implementation](./dynamic-config-etcd.md)
 - [Consul Implementation](./dynamic-config-consul.md)
 - [Apollo Implementation](./dynamic-config-apollo.md)
-- [Kuberbetes Configmap Implementation](./dynamic-config-configmap.md)
+- [Kubernetes Configmap Implementation](./dynamic-config-configmap.md)
 - [Nacos Implementation](./dynamic-config-nacos.md)

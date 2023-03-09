@@ -329,6 +329,18 @@ pagerDutyHooks:
 
 You can also configure multiple integration keys.
 
+## Discord Hook
+Follow the [Discord Webhooks guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and create a new webhook.
+
+Then configure as follows:
+```yml
+discordHooks:
+  textTemplate: "Apache SkyWalking Alarm: \n %s."
+  webhooks:
+    - url: https://discordapp.com/api/webhooks/1008166889777414645/8e0Am4Zb-YGbBqqbiiq0jSHPTEEaHa4j1vIC-zSSm231T8ewGxgY0_XUYpY-k1nN4HBl
+      username: robot
+```
+
 ## Update the settings dynamically
 Since 6.5.0, the alerting settings can be updated dynamically at runtime by [Dynamic Configuration](dynamic-config.md),
 which will override the settings in `alarm-settings.yml`.
@@ -336,3 +348,24 @@ which will override the settings in `alarm-settings.yml`.
 In order to determine whether an alerting rule is triggered or not, SkyWalking needs to cache the metrics of a time window for
 each alerting rule. If any attribute (`metrics-name`, `op`, `threshold`, `period`, `count`, etc.) of a rule is changed,
 the sliding window will be destroyed and re-created, causing the Alarm of this specific rule to restart again.
+
+### Keys with data types of alerting rule configuration file
+
+| Alerting element     | Configuration property key | Type           | Description        |
+|----------------------|----------------------------|----------------|--------------------|
+| Include names        | include-names              | string array   |                    | 
+| Exclude names        | exclude-names              | string array   |                    | 
+| Include names regex  | include-names-regex        | string         | Java regex Pattern |
+| Exclude names regex  | exclude-names-regex        | string         | Java regex Pattern |
+| Include labels       | include-labels             | string array   |                    |
+| Exclude labels       | exclude-labels             | string array   |                    |
+| Include labels regex | include-labels-regex       | string         | Java regex Pattern |
+| Exclude labels regex | exclude-labels-regex       | string         | Java regex Pattern |
+| Tags                 | tags                       | key-value pair |                    |
+| Threshold            | threshold                  | number         |                    |
+| OP                   | op                         | operator       | example: `>`, `>=` |
+| Period               | Period                     | int            |                    |
+| Count                | count                      | int            |                    |
+| Only as condition    | only-as-condition          | boolean        |                    |
+| Silence period       | silence-period             | int            |                    |
+| Message              | message                    | string         |                    |

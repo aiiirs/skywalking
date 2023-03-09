@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.apache.skywalking.oap.server.core.alarm.provider.discord.DiscordSettings;
 import org.apache.skywalking.oap.server.core.alarm.provider.pagerduty.PagerDutySettings;
 import org.apache.skywalking.oap.server.library.util.StringUtil;
 import org.apache.skywalking.oap.server.core.alarm.provider.dingtalk.DingtalkSettings;
@@ -37,6 +38,7 @@ import org.apache.skywalking.oap.server.core.alarm.provider.slack.SlackSettings;
 import org.apache.skywalking.oap.server.core.alarm.provider.wechat.WechatSettings;
 import org.apache.skywalking.oap.server.core.alarm.provider.welink.WeLinkSettings;
 import org.apache.skywalking.oap.server.library.util.CollectionUtils;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -47,13 +49,13 @@ public class RulesReader {
     private Map yamlData;
 
     public RulesReader(InputStream inputStream) {
-        Yaml yaml = new Yaml(new SafeConstructor());
-        yamlData = (Map) yaml.load(inputStream);
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
+        yamlData = yaml.load(inputStream);
     }
 
     public RulesReader(Reader io) {
-        Yaml yaml = new Yaml(new SafeConstructor());
-        yamlData = (Map) yaml.load(io);
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
+        yamlData = yaml.load(io);
     }
 
     /**
@@ -73,6 +75,7 @@ public class RulesReader {
             readFeishuConfig(rules);
             readWeLinkConfig(rules);
             readPagerDutyConfig(rules);
+            readDiscordConfig(rules);
         }
         return rules;
     }
@@ -302,5 +305,29 @@ public class RulesReader {
 
             rules.setPagerDutySettings(pagerDutySettings);
         }
+    }
+
+    /**
+     * Read Discord hook config into {@link DiscordSettings}
+     */
+    @SuppressWarnings("unchecked")
+    private void readDiscordConfig(Rules rules) {
+        Map<String, Object> discordConfig = (Map<String, Object>) yamlData.getOrDefault(
+                "discordHooks",
+                Collections.EMPTY_MAP
+        );
+        String textTemplate = (String) discordConfig.get("textTemplate");
+        List<Map<String, String>> discordWebHooks = (List<Map<String, String>>) discordConfig.get("webhooks");
+        if (StringUtil.isBlank(textTemplate) || CollectionUtils.isEmpty(discordWebHooks)) {
+            return;
+        }
+        List<DiscordSettings.WebHookUrl> webHookUrls = discordWebHooks.stream().map(
+                DiscordSettings.WebHookUrl::generateFromMap
+        ).collect(Collectors.toList());
+
+        DiscordSettings discordSettings = new DiscordSettings();
+        discordSettings.setTextTemplate(textTemplate);
+        discordSettings.setWebhooks(webHookUrls);
+        rules.setDiscordSettings(discordSettings);
     }
 }

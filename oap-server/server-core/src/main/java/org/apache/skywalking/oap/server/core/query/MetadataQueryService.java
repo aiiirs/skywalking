@@ -21,6 +21,7 @@ package org.apache.skywalking.oap.server.core.query;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -77,9 +78,9 @@ public class MetadataQueryService implements org.apache.skywalking.oap.server.li
         return getMetadataQueryDAO().getInstance(instanceId);
     }
 
-    public List<ServiceInstance> listInstances(final long startTimestamp, final long endTimestamp,
+    public List<ServiceInstance> listInstances(final Duration duration,
                                                      final String serviceId) throws IOException {
-        return getMetadataQueryDAO().listInstances(startTimestamp, endTimestamp, serviceId)
+        return getMetadataQueryDAO().listInstances(duration, serviceId)
                                     .stream().distinct().collect(Collectors.toList());
     }
 
@@ -104,7 +105,10 @@ public class MetadataQueryService implements org.apache.skywalking.oap.server.li
     }
 
     public List<Process> listProcesses(final Duration duration, final String instanceId) throws IOException {
-        return getMetadataQueryDAO().listProcesses(instanceId, duration.getStartTimeBucket(), duration.getEndTimeBucket());
+        if (duration.getEndTimeBucket() < duration.getStartTimeBucket()) {
+            return Collections.emptyList();
+        }
+        return getMetadataQueryDAO().listProcesses(instanceId, duration, true);
     }
 
     public Process getProcess(String processId) throws IOException {

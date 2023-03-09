@@ -48,13 +48,22 @@ public class UITemplateInitializer {
         Layer.OS_LINUX.name(),
         Layer.MESH_CP.name(),
         Layer.MESH_DP.name(),
+        Layer.MYSQL.name(),
+        Layer.POSTGRESQL.name(),
         Layer.K8S.name(),
         Layer.BROWSER.name(),
         Layer.SO11Y_OAP.name(),
         Layer.VIRTUAL_DATABASE.name(),
+        Layer.VIRTUAL_CACHE.name(),
         Layer.K8S_SERVICE.name(),
         Layer.SO11Y_SATELLITE.name(),
         Layer.FAAS.name(),
+        Layer.APISIX.name(),
+        Layer.VIRTUAL_MQ.name(),
+        Layer.AWS_EKS.name(),
+        Layer.OS_WINDOWS.name(),
+        Layer.AWS_S3.name(),
+        Layer.AWS_DYNAMODB.name(),
         "custom"
     };
     private final UITemplateManagementService uiTemplateManagementService;

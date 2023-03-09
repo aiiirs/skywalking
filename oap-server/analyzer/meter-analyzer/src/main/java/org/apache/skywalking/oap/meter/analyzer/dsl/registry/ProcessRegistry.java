@@ -66,7 +66,7 @@ public class ProcessRegistry {
         return generateVirtualProcess(service, instance, name);
     }
 
-    private static String generateVirtualProcess(String service, String instance, String processName) {
+    public static String generateVirtualProcess(String service, String instance, String processName) {
         final ProcessTraffic traffic = new ProcessTraffic();
         final String serviceId = IDManager.ServiceID.buildId(service, true);
         traffic.setServiceId(serviceId);
@@ -75,8 +75,10 @@ public class ProcessRegistry {
         traffic.setAgentId(Const.EMPTY_STRING);
         traffic.setLabelsJson(Const.EMPTY_STRING);
         traffic.setDetectType(ProcessDetectType.VIRTUAL.value());
-        traffic.setTimeBucket(TimeBucket.getTimeBucket(System.currentTimeMillis(), DownSampling.Minute));
+        final long timeBucket = TimeBucket.getTimeBucket(System.currentTimeMillis(), DownSampling.Minute);
+        traffic.setTimeBucket(timeBucket);
+        traffic.setLastPingTimestamp(timeBucket);
         MetricsStreamProcessor.getInstance().in(traffic);
-        return traffic.id();
+        return traffic.id().build();
     }
 }

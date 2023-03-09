@@ -58,7 +58,7 @@ info:
 │   └── serviceB
 │       └── productAPI-v2.yaml
 ```
-3. The feature is enabled by default. You can disable it by setting the `Core Module` configuration `${SW_CORE_ENABLE_ENDPOINT_NAME_GROUPING_BY_OPAENAPI:false}`.
+3. The feature is enabled by default. You can disable it by setting the `Core Module` configuration `${SW_CORE_ENABLE_ENDPOINT_NAME_GROUPING_BY_OPENAPI:false}`.
 
 ### Rules match priority 
 We recommend designing the API path as clearly as possible. If the API path is fuzzy and an endpoint name matches multiple paths, SkyWalking would select a path according to the match priority set out below:
@@ -272,7 +272,7 @@ components:
 
 Here are some use cases:
 
-   | Incoming Endpiont | Incoming Service | x-sw-service-name | x-sw-endpoint-name-match-rule | x-sw-endpoint-name-format | Matched | Grouping Result |
+   | Incoming Endpoint | Incoming Service | x-sw-service-name | x-sw-endpoint-name-match-rule | x-sw-endpoint-name-format | Matched | Grouping Result |
    |-----|-----|-----|-----|-----|-----|-----|
    | `GET:/products` | serviceB | default | default | default | true | `GET:/products` |
    | `GET:/products/123` | serviceB | default | default | default |  true | `GET:/products{id}` |
